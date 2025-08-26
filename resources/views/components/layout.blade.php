@@ -11,19 +11,19 @@
 </head>
 <body>
     <div class="d-flex">
-        <aside>
+        <aside class="expand">
             <div class="d-flex">
                 <button class="" type="button" id="toggle-btn"><i class="fa-solid fa-bars"></i></button>
                 <div class="sidebar-logo">
-                    <a href="#">Sidebar</a>
+                    <a href="#">Novocib</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link"><i class=" fa-solid fa-user"></i><span>Profile</span></a>
+                    <a href="/" class="sidebar-link {{ Request::is('/') ? 'active' : '' }}"><i class=" fa-solid fa-house"></i><span>Home</span></a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link"><i class="fa-solid fa-building"></i><span>Company</span></a>
+                    <a href="/companies" class="sidebar-link {{ Request::is('companies') ? 'active' : '' }}"><i class="fa-solid fa-building"></i><span>Companies</span></a>
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link"><i class="fa-solid fa-file-invoice"></i><span>Reports</span></a>

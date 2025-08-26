@@ -59,7 +59,7 @@ aside.expand {
 #toggle-btn {
   background: transparent;
   border: none;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.2rem;
   cursor: pointer;
 }
 
@@ -107,9 +107,17 @@ aside:not(.expand) .sidebar-footer .sidebar-link span {
   margin-right: 0.75rem;
 }
 
-.sidebar-link:hover {
+.sidebar-link:hover,
+.sidebar-link.active {
   background-color: rgba(255, 255, 255, 0.1);
   border-left: 3px solid #3b7ddd;
+  color: #fff !important;
+}
+
+/* Active state with different background */
+.sidebar-link.active {
+  background-color: rgba(59, 125, 221, 0.2);
+  font-weight: 500;
 }
 
 /* Dropdowns */
