@@ -1,39 +1,41 @@
 @if(isset($sampleAnalysis))
-    {!! Form::model($sampleAnalysis, ['route' => ['sample-analyses.update', $sampleAnalysis], 'method' => 'PUT']) !!}
+    <form action="{{ route('sample-analyses.update', $sampleAnalysis) }}" method="POST">
+    @method('PUT')
 @else
-    {!! Form::open(['route' => 'sample-analyses.store']) !!}
+    <form action="{{ route('sample-analyses.store') }}" method="POST">
 @endif
+@csrf
 
 <div class="row">
     <div class="col-md-6">
-        <h4>Sampling Information</h4>
+        <h4>Date et lieu de prélèvement</h4>
         <div class="form-group">
-            {{ Form::label('sampling_date', 'Sampling Date') }}
-            {{ Form::date('sampling_date', null, ['class' => 'form-control', 'required']) }}
+            <label for="sampling_date">Date de prélèvement</label>
+            <input type="date" name="sampling_date" id="sampling_date" class="form-control" value="{{ $sampleAnalysis->sampling_date ?? old('sampling_date') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('sampling_location', 'Sampling Location') }}
-            {{ Form::text('sampling_location', null, ['class' => 'form-control', 'required']) }}
+            <label for="sampling_location">Lieu de prélèvement</label>
+            <input type="text" name="sampling_location" id="sampling_location" class="form-control" value="{{ $sampleAnalysis->sampling_location ?? old('sampling_location') }}" required>
         </div>
     </div>
 
     <div class="col-md-6">
-        <h4>Laboratory Information</h4>
+        <h4>Date, heure et T°C à la réception au laboratoire</h4>
         <div class="form-group">
-            {{ Form::label('lab_receipt_datetime', 'Lab Receipt Date/Time') }}
-            {{ Form::datetimeLocal('lab_receipt_datetime', null, ['class' => 'form-control', 'required']) }}
+            <label for="lab_receipt_datetime">Date et heure de réception</label>
+            <input type="datetime-local" name="lab_receipt_datetime" id="lab_receipt_datetime" class="form-control" value="{{ $sampleAnalysis->lab_receipt_datetime ?? old('lab_receipt_datetime') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('receipt_temperature', 'Receipt Temperature (°C)') }}
-            {{ Form::number('receipt_temperature', null, ['class' => 'form-control', 'step' => '0.01', 'required']) }}
+            <label for="receipt_temperature">Température à la réception (°C)</label>
+            <input type="number" name="receipt_temperature" id="receipt_temperature" class="form-control" step="0.01" value="{{ $sampleAnalysis->receipt_temperature ?? old('receipt_temperature') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('storage_conditions', 'Storage Conditions') }}
-            {{ Form::textarea('storage_conditions', null, ['class' => 'form-control', 'rows' => 2, 'required']) }}
+            <label for="storage_conditions">Conditions de conservation</label>
+            <textarea name="storage_conditions" id="storage_conditions" class="form-control" rows="2" required>{{ $sampleAnalysis->storage_conditions ?? old('storage_conditions') }}</textarea>
         </div>
         <div class="form-group">
-            {{ Form::label('analysis_date', 'Analysis Date') }}
-            {{ Form::date('analysis_date', null, ['class' => 'form-control', 'required']) }}
+            <label for="analysis_date">Date de mise en analyse</label>
+            <input type="date" name="analysis_date" id="analysis_date" class="form-control" value="{{ $sampleAnalysis->analysis_date ?? old('analysis_date') }}" required>
         </div>
     </div>
 </div>
@@ -42,71 +44,67 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h4>Product Information</h4>
+        <h4>Informations sur le produit</h4>
         <div class="form-group">
-            {{ Form::label('supplier_manufacturer', 'Supplier/Manufacturer') }}
-            {{ Form::text('supplier_manufacturer', null, ['class' => 'form-control', 'required']) }}
+            <label for="supplier_manufacturer">Fournisseur/Fabricant</label>
+            <input type="text" name="supplier_manufacturer" id="supplier_manufacturer" class="form-control" value="{{ $sampleAnalysis->supplier_manufacturer ?? old('supplier_manufacturer') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('packaging', 'Packaging') }}
-            {{ Form::text('packaging', null, ['class' => 'form-control', 'required']) }}
+            <label for="packaging">Conditionnement</label>
+            <input type="text" name="packaging" id="packaging" class="form-control" value="{{ $sampleAnalysis->packaging ?? old('packaging') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('approval_number', 'Approval Number') }}
-            {{ Form::text('approval_number', null, ['class' => 'form-control', 'required']) }}
+            <label for="approval_number">Agrément</label>
+            <input type="text" name="approval_number" id="approval_number" class="form-control" value="{{ $sampleAnalysis->approval_number ?? old('approval_number') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('batch_number', 'Batch Number') }}
-            {{ Form::text('batch_number', null, ['class' => 'form-control', 'required']) }}
+            <label for="batch_number">Lot</label>
+            <input type="text" name="batch_number" id="batch_number" class="form-control" value="{{ $sampleAnalysis->batch_number ?? old('batch_number') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('fishing_type', 'Fishing Type') }}
-            {{ Form::text('fishing_type', null, ['class' => 'form-control', 'required']) }}
+            <label for="fishing_type">Type de pêche</label>
+            <input type="text" name="fishing_type" id="fishing_type" class="form-control" value="{{ $sampleAnalysis->fishing_type ?? old('fishing_type') }}" required>
         </div>
     </div>
 
     <div class="col-md-6">
-        <h4>Additional Information</h4>
+        <h4>Informations supplémentaires</h4>
         <div class="form-group">
-            {{ Form::label('product_name', 'Product Name') }}
-            {{ Form::text('product_name', null, ['class' => 'form-control', 'required']) }}
+            <label for="product_name">Nom de produit</label>
+            <input type="text" name="product_name" id="product_name" class="form-control" value="{{ $sampleAnalysis->product_name ?? old('product_name') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('species', 'Species') }}
-            {{ Form::text('species', null, ['class' => 'form-control', 'required']) }}
+            <label for="species">Espèce</label>
+            <input type="text" name="species" id="species" class="form-control" value="{{ $sampleAnalysis->species ?? old('species') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('origin', 'Origin') }}
-            {{ Form::text('origin', null, ['class' => 'form-control', 'required']) }}
+            <label for="origin">Origine</label>
+            <input type="text" name="origin" id="origin" class="form-control" value="{{ $sampleAnalysis->origin ?? old('origin') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('packaging_date', 'Packaging Date') }}
-            {{ Form::date('packaging_date', null, ['class' => 'form-control', 'required']) }}
+            <label for="packaging_date">Date d'emballage</label>
+            <input type="date" name="packaging_date" id="packaging_date" class="form-control" value="{{ $sampleAnalysis->packaging_date ?? old('packaging_date') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('best_before_date', 'Best Before Date') }}
-            {{ Form::date('best_before_date', null, ['class' => 'form-control', 'required']) }}
+            <label for="best_before_date">À consommer jusqu'au</label>
+            <input type="date" name="best_before_date" id="best_before_date" class="form-control" value="{{ $sampleAnalysis->best_before_date ?? old('best_before_date') }}" required>
         </div>
         <div class="form-group">
-            {{ Form::label('imp', 'IMP') }}
-            {{ Form::text('imp', null, ['class' => 'form-control']) }}
+            <label for="imp">IMP</label>
+            <input type="text" name="imp" id="imp" class="form-control" value="{{ $sampleAnalysis->imp ?? old('imp') }}">
         </div>
         <div class="form-group">
-            {{ Form::label('hx', 'HX') }}
-            {{ Form::text('hx', null, ['class' => 'form-control']) }}
+            <label for="hx">HX</label>
+            <input type="text" name="hx" id="hx" class="form-control" value="{{ $sampleAnalysis->hx ?? old('hx') }}">
         </div>
         <div class="form-group">
-            {{ Form::label('nucleotide_note', 'Nucleotide Note') }}
-            {{ Form::textarea('nucleotide_note', null, ['class' => 'form-control', 'rows' => 3]) }}
+            <label for="nucleotide_note">Note Nucléotide</label>
+            <textarea name="nucleotide_note" id="nucleotide_note" class="form-control" rows="3">{{ $sampleAnalysis->nucleotide_note ?? old('nucleotide_note') }}</textarea>
         </div>
     </div>
 </div>
 
 <div class="form-group mt-4">
-    <button type="submit" class="btn btn-primary">
-        {{ isset($sampleAnalysis) ? 'Update' : 'Create' }} Analysis
-    </button>
+    <button type="submit" class="btn btn-primary">{{ isset($sampleAnalysis) ? 'Update' : 'Save' }}</button>
     <a href="{{ route('sample-analyses.index') }}" class="btn btn-secondary">Cancel</a>
-</div>
-
-{!! Form::close() !!}
+</form>

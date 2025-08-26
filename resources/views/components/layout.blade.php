@@ -26,6 +26,9 @@
                     <a href="/companies" class="sidebar-link {{ Request::is('companies') ? 'active' : '' }}"><i class="fa-solid fa-building"></i><span>Companies</span></a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="/sample-analyses" class="sidebar-link {{ Request::is('sample-analyses') ? 'active' : '' }}"><i class="fa-solid fa-flask"></i><span>Analyses</span></a>
+                </li>
+                <li class="sidebar-item">
                     <a href="#" class="sidebar-link"><i class="fa-solid fa-file-invoice"></i><span>Reports</span></a>
                 </li>
                 <li class="sidebar-item">
@@ -71,7 +74,7 @@
             </div>
         </aside>
         <main class="p-3">
-            {{ $slot }}
+            {{ $slot ?? '' }}
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
