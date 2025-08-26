@@ -3,9 +3,19 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1><i class="fa-solid fa-flask"></i> Détails de l'analyse</h1>
             <div>
+                <a href="{{ route('sample-analyses.create') }}" class="btn btn-success">
+                    <i class="fa-solid fa-plus"></i> Nouvelle analyse
+                </a>
                 <a href="{{ route('sample-analyses.edit', $sampleAnalysis) }}" class="btn btn-warning">
                     <i class="fa-solid fa-edit"></i> Modifier
                 </a>
+                <form action="{{ route('sample-analyses.clone', $sampleAnalysis) }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-primary" 
+                            onclick="return confirm('Voulez-vous vraiment copier cette analyse ?')">
+                        <i class="fa-solid fa-copy"></i> Copier
+                    </button>
+                </form>
                 <form action="{{ route('sample-analyses.destroy', $sampleAnalysis) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
