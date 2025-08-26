@@ -1,10 +1,6 @@
 <x-layout>
     <div class="container">
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+        <x-alert type="success" :autodismiss="4000" />
         
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1><i class="fa-solid fa-building"></i> Companies</h1>

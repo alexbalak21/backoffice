@@ -1,12 +1,14 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layout>
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Edit Sample Analysis #{{ $sampleAnalysis->id }}</h1>
         <div>
-            <a href="{{ route('sample-analyses.show', $sampleAnalysis) }}" class="btn btn-info">View</a>
-            <a href="{{ route('sample-analyses.index') }}" class="btn btn-secondary">Back to List</a>
+            <a href="{{ route('sample-analyses.show', $sampleAnalysis) }}" class="btn btn-info">
+                <i class="fa-solid fa-eye"></i> View
+            </a>
+            <a href="{{ route('sample-analyses.index') }}" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Back to List
+            </a>
         </div>
     </div>
 
@@ -22,4 +24,4 @@
 
     @include('sample-analyses._form')
 </div>
-@endsection
+</x-layout>

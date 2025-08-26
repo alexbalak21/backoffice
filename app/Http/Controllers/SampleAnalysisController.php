@@ -140,4 +140,16 @@ class SampleAnalysisController extends Controller
             return back()->with('error', 'Error deleting sample analysis: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Clone the specified resource.
+     */
+    public function clone(SampleAnalysis $sampleAnalysis)
+    {
+        $newAnalysis = $sampleAnalysis->replicate();
+        $newAnalysis->push();
+
+        return redirect()->route('sample-analyses.edit', $newAnalysis)
+            ->with('success', 'Sample analysis cloned successfully. Please update the details.');
+    }
 }

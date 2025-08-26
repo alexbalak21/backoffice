@@ -13,3 +13,5 @@ Route::resource('companies', CompanyController::class);
 
 // Sample Analysis routes
 Route::resource('sample-analyses', SampleAnalysisController::class);
+Route::post('sample-analyses/{sampleAnalysis}/clone', [SampleAnalysisController::class, 'clone'])
+    ->name('sample-analyses.clone');

@@ -5,11 +5,7 @@
         <a href="{{ route('sample-analyses.create') }}" class="btn btn-primary">Add New Analysis</a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <x-alert type="success" :autodismiss="4000" />
 
     <div class="card">
         <div class="card-body">
@@ -34,13 +30,25 @@
                                 <td>{{ $analysis->sampling_date->format('Y-m-d') }}</td>
                                 <td>{{ $analysis->analysis_date->format('Y-m-d') }}</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <a href="{{ route('sample-analyses.show', $analysis) }}" class="btn btn-sm btn-info">View</a>
-                                        <a href="{{ route('sample-analyses.edit', $analysis) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ route('sample-analyses.show', $analysis) }}" class="btn btn-sm btn-info" title="View">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('sample-analyses.edit', $analysis) }}" class="btn btn-sm btn-warning" title="Edit">
+                                            <i class="fa-solid fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('sample-analyses.clone', $analysis) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-secondary" title="Clone">
+                                                <i class="fa-solid fa-copy"></i>
+                                            </button>
+                                        </form>
                                         <form action="{{ route('sample-analyses.destroy', $analysis) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this analysis?')">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
