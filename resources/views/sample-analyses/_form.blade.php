@@ -75,7 +75,19 @@
         </div>
         <div class="form-group">
             <label for="species">Espèce</label>
-            <input type="text" name="species" id="species" class="form-control" value="{{ $sampleAnalysis->species ?? old('species') }}" required>
+            <input type="text" name="species" id="species" class="form-control" value="{{ $sampleAnalysis->species ?? old('species') }}" list="speciesList" autocomplete="off" required>
+            <datalist id="speciesList">
+                <option value="Thon rouge">
+                <option value="Saumon">
+                <option value="Truite">
+                <option value="Bar">
+                <option value="Daurade">
+                <option value="Loup de mer">
+                <option value="Sole">
+                <option value="Cabillaud">
+                <option value="Colin">
+                <option value="Merlu">
+            </datalist>
         </div>
         <div class="form-group">
             <label for="origin">Origine</label>
@@ -107,4 +119,31 @@
 <div class="form-group mt-4">
     <button type="submit" class="btn btn-primary">{{ isset($sampleAnalysis) ? 'Update' : 'Save' }}</button>
     <a href="{{ route('sample-analyses.index') }}" class="btn btn-secondary">Cancel</a>
+</div>
+
+@push('scripts')
+<script>
+    // Add dynamic species suggestion based on user input
+    document.getElementById('species').addEventListener('input', function(e) {
+        const input = e.target;
+        const list = document.getElementById('speciesList');
+        const value = input.value.toLowerCase();
+        
+        // If you want to fetch suggestions from an API, you can do it here
+        // Example:
+        // if (value.length > 2) { // Only search after 3 characters
+        //     fetch(`/api/species?q=${encodeURIComponent(value)}`)
+        //         .then(response => response.json())
+        //         .then(species => {
+        //             list.innerHTML = '';
+        //             species.forEach(item => {
+        //                 const option = document.createElement('option');
+        //                 option.value = item.name;
+        //                 list.appendChild(option);
+        //             });
+        //         });
+        // }
+    });
+</script>
+@endpush
 </form>
