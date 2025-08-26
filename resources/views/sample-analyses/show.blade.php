@@ -21,11 +21,16 @@
             <div class="card-body">
                 <h5 class="card-title">Analyse #{{ $sampleAnalysis->id }}</h5>
                 
+                <div class="mb-4">
+                    <h6>Client</h6>
+                    <p class="mb-0">{{ $sampleAnalysis->client ?? 'Non spécifié' }}</p>
+                </div>
+                
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <h6>Informations de prélèvement</h6>
-                        <p><strong>Date :</strong> {{ $sampleAnalysis->sampling_date->format('d/m/Y') }}</p>
-                        <p><strong>Lieu :</strong> {{ $sampleAnalysis->sampling_location }}</p>
+                        <p><strong>Date :</strong> {{ $sampleAnalysis->sampling_date ? $sampleAnalysis->sampling_date->format('d/m/Y') : 'Non spécifiée' }}</p>
+                        <p><strong>Lieu :</strong> {{ $sampleAnalysis->sampling_location ?? 'Non spécifié' }}</p>
                         
                         <h6 class="mt-4">Informations du produit</h6>
                         <p><strong>Nom :</strong> {{ $sampleAnalysis->product_name }}</p>
@@ -35,10 +40,10 @@
                     
                     <div class="col-md-6">
                         <h6>Détails du laboratoire</h6>
-                        <p><strong>Reçu le :</strong> {{ $sampleAnalysis->lab_receipt_datetime->format('d/m/Y H:i') }}</p>
-                        <p><strong>Température :</strong> {{ number_format($sampleAnalysis->receipt_temperature, 2, ',', ' ') }}°C</p>
-                        <p><strong>Stockage :</strong> {{ $sampleAnalysis->storage_conditions }}</p>
-                        <p><strong>Analysé le :</strong> {{ $sampleAnalysis->analysis_date->format('d/m/Y') }}</p>
+                        <p><strong>Reçu le :</strong> {{ $sampleAnalysis->lab_receipt_datetime ? $sampleAnalysis->lab_receipt_datetime->format('d/m/Y H:i') : 'Non spécifié' }}</p>
+                        <p><strong>Température :</strong> {{ $sampleAnalysis->receipt_temperature ? number_format($sampleAnalysis->receipt_temperature, 2, ',', ' ') . '°C' : 'Non spécifiée' }}</p>
+                        <p><strong>Stockage :</strong> {{ $sampleAnalysis->storage_conditions ?? 'Non spécifié' }}</p>
+                        <p><strong>Analysé le :</strong> {{ $sampleAnalysis->analysis_date ? $sampleAnalysis->analysis_date->format('d/m/Y') : 'Non spécifié' }}</p>
                     </div>
                 </div>
                 

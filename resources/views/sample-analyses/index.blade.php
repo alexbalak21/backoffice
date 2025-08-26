@@ -13,7 +13,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Client</th>
                             <th>Product Name</th>
                             <th>Batch Number</th>
                             <th>Sampling Date</th>
@@ -24,11 +24,11 @@
                     <tbody>
                         @forelse($sampleAnalyses as $analysis)
                             <tr>
-                                <td>{{ $analysis->id }}</td>
-                                <td>{{ $analysis->product_name }}</td>
+                                <td>{{ $analysis->client ?? 'N/A' }}</td>
+                                <td>{{ $analysis->product_name ?? 'N/A' }}</td>
                                 <td>{{ $analysis->batch_number }}</td>
-                                <td>{{ $analysis->sampling_date->format('Y-m-d') }}</td>
-                                <td>{{ $analysis->analysis_date->format('Y-m-d') }}</td>
+                                <td>{{ $analysis->sampling_date ? $analysis->sampling_date->format('Y-m-d') : 'N/A' }}</td>
+                                <td>{{ $analysis->analysis_date ? $analysis->analysis_date->format('Y-m-d') : 'N/A' }}</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('sample-analyses.show', $analysis) }}" class="btn btn-sm btn-info" title="View">

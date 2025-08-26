@@ -6,6 +6,17 @@
 @endif
 @csrf
 
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="client">Client</label>
+            <input type="text" name="client" id="client" class="form-control" 
+                   value="{{ is_array($sampleAnalysis) ? ($sampleAnalysis['client'] ?? old('client')) : ($sampleAnalysis->client ?? old('client')) }}"
+                   placeholder="Nom du client">
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-6">
         <h4>Date et lieu de prélèvement</h4>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SampleAnalysis extends Model
 {
     protected $fillable = [
+        'client',
         'sampling_date',
         'sampling_location',
         'lab_receipt_datetime',
@@ -36,4 +37,6 @@ class SampleAnalysis extends Model
         'best_before_date' => 'date',
         'receipt_temperature' => 'decimal:2'
     ];
+
+    // Client is now a simple string field
 }

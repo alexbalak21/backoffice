@@ -31,6 +31,7 @@ class SampleAnalysisController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'client' => 'nullable|string|max:255',
             'sampling_date' => 'nullable|date',
             'sampling_location' => 'nullable|string|max:255',
             'lab_receipt_datetime' => 'nullable|date',
@@ -90,6 +91,7 @@ class SampleAnalysisController extends Controller
     public function update(Request $request, SampleAnalysis $sampleAnalysis)
     {
         $validated = $request->validate([
+            'client' => 'nullable|string|max:255',
             'sampling_date' => 'nullable|date',
             'sampling_location' => 'nullable|string|max:255',
             'lab_receipt_datetime' => 'nullable|date',
