@@ -1,20 +1,15 @@
 <x-layout>
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Add New Sample Analysis</h1>
-        <a href="{{ route('sample-analyses.index') }}" class="btn btn-secondary">Back to List</a>
+        <h1>{{ session('old') ? 'Review Copied Analysis' : 'Add New Sample Analysis' }}</h1>
+        <a href="{{ route('sample-analyses.index') }}" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Back to List
+        </a>
     </div>
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <x-alert type="success" :autodismiss="4000" />
+    <x-alert type="danger" :autodismiss="4000" />
 
-    @include('sample-analyses._form')
+    @include('sample-analyses._form', ['sampleAnalysis' => session('old')])
 </div>
 </x-layout>

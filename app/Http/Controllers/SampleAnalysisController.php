@@ -146,10 +146,20 @@ class SampleAnalysisController extends Controller
      */
     public function clone(SampleAnalysis $sampleAnalysis)
     {
-        $newAnalysis = $sampleAnalysis->replicate();
-        $newAnalysis->push();
-
-        return redirect()->route('sample-analyses.edit', $newAnalysis)
-            ->with('success', 'Sample analysis cloned successfully. Please update the details.');
+        // Get all the attributes from the original
+        $attributes = $sampleAnalysis->getAttributes();
+        
+        // Remove the primary key and any timestamps
+        unset($attributes['id'], $attributes['created_at'], $attributes['updated_at']);
+        
+        // Add a note to the batch number to indicate it's a copy
+        if (isset($attributes['batch_number'])) {
+            $attributes['batch_number'] = $attributes['batch_number'] . ' (Copy)';
+        }
+        
+        // Store the attributes in the session to pre-fill the form
+        return redirect()->route('sample-analyses.create')
+            ->with('old', $attributes)
+            ->with('success', 'Please review and save the copied analysis.');
     }
 }
