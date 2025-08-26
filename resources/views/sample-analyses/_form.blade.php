@@ -10,8 +10,8 @@
     <div class="col-md-6">
         <h4>Date et lieu de prélèvement</h4>
         <div class="form-group">
-            <label for="sampling_date">Date de prélèvement</label>
-            <input type="date" name="sampling_date" id="sampling_date" class="form-control" value="{{ $sampleAnalysis->sampling_date ?? old('sampling_date') }}" required>
+            <label for="sampling_date">Date et heure de prélèvement</label>
+            <input type="datetime-local" name="sampling_date" id="sampling_date" class="form-control" value="{{ isset($sampleAnalysis->sampling_date) ? \Carbon\Carbon::parse($sampleAnalysis->sampling_date)->format('Y-m-d\TH:i') : old('sampling_date') }}" required>
         </div>
         <div class="form-group">
             <label for="sampling_location">Lieu de prélèvement</label>
