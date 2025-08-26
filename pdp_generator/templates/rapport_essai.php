@@ -4,7 +4,7 @@ function generateRapport($client)
 {
 
     $client['name'] = "SCAPMAREE";
-    $client['address'] = "5 rue Marcelin Berthelot, 91320 WISSOUS Cedex, A l'attention de M. Adrien CAGNA";
+    $client['address'] = "5 rue Marcelin Berthelot<br>91320 WISSOUS Cedex";
     $client['recipient'] = "M. Adrien CAGNA";
 
     ob_start(); ?>
@@ -16,7 +16,7 @@ function generateRapport($client)
 
     <body>
         <header>
-            <img class="logo" src="/pdf_templates/img/logo_underline.png" alt="novocib logo">
+            <img class="logo" src="/img/logo_underline.png" alt="novocib logo">
             <div class="address">
                 <strong>NOVOCIB</strong><br>
                 Criée Boulogne<br>
@@ -40,8 +40,10 @@ function generateRapport($client)
             <div class="client">
                 <span>
                     <strong><?= $client['name']; ?></strong><br>
-                    <?= $client['address']; ?><br>
-                    A l'attention de <?= $client['recipient']; ?>
+                    <?= $client['address']; ?>
+                    <?php if (!empty($client['recipient'])): ?>
+                        <br>A l'attention de <?= $client['recipient']; ?>
+                    <?php endif; ?>
                 </span>
             </div>
         </header>

@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Back-office</h1>
-        <a class="btn btn-primary" href="php_generator/generate_pdf.php">Generate PDF</a>
+        <a class="btn btn-primary" href="pdp_generator/generate_pdf.php">Generate PDF</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
