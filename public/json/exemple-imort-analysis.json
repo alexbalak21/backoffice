@@ -1,0 +1,40 @@
+[
+  {
+    "client": "Client 1",
+    "product_name": "Product 1",
+    "batch_number": "BATCH-001",
+    "sampling_date": "2025-08-27",
+    "analysis_date": "2025-08-28",
+    "species": "Tuna",
+    "origin": "Spain",
+    "supplier_manufacturer": "Supplier Inc",
+    "sampling_location": "Factory A",
+    "receipt_temperature": 4.5,
+    "storage_conditions": "Refrigerated",
+    "packaging": "Vacuum sealed",
+    "approval_number": "APP-123",
+    "fishing_type": "Wild caught",
+    "packaging_date": "2025-08-26",
+    "best_before_date": "2025-12-31",
+    "nucleotide_note": "Sample note"
+  },
+  {
+    "client": "Client 2",
+    "product_name": "Product 2",
+    "batch_number": "BATCH-002",
+    "sampling_date": "2025-08-27",
+    "analysis_date": "2025-08-28",
+    "species": "Salmon",
+    "origin": "Spain",
+    "supplier_manufacturer": "Supplier Inc",
+    "sampling_location": "Factory A",
+    "receipt_temperature": 4.5,
+    "storage_conditions": "Refrigerated",
+    "packaging": "Vacuum sealed",
+    "approval_number": "APP-123",
+    "fishing_type": "Wild caught",
+    "packaging_date": "2025-08-26",
+    "best_before_date": "2025-12-31",
+    "nucleotide_note": "Sample note"
+  }
+]

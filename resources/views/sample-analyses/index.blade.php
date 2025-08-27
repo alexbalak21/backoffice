@@ -2,8 +2,14 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1><i class="fa-solid fa-flask"></i> Analyses d'échantillons</h1>
-        <a href="{{ route('sample-analyses.create') }}" class="btn btn-success"><i class="fa-solid fa-plus"></i> 
-            Nouvelle analyse</a>
+        <div class="btn-group">
+            <a href="/test-controller" class="btn btn-outline-primary">
+                <i class="fa-solid fa-file-import me-1"></i> Importer JSON
+            </a>
+            <a href="{{ route('sample-analyses.create') }}" class="btn btn-success">
+                <i class="fa-solid fa-plus me-1"></i> Nouvelle analyse
+            </a>
+        </div>
     </div>
 
     <x-alert type="success" :autodismiss="4000" />

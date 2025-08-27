@@ -19,3 +19,15 @@ Route::post('sample-analyses/{sampleAnalysis}/clone', [SampleAnalysisController:
 // Sample Analysis PDF Export
 Route::get('/sample-analyses/{sampleAnalysis}/export-pdf', [SampleAnalysisController::class, 'exportPdf'])
     ->name('sample-analyses.export-pdf');
+
+// Test route
+Route::get('/test-import', function() {
+    return 'Test route is working!';
+});
+
+// Test direct controller method
+Route::get('/test-controller', [App\Http\Controllers\SampleAnalysisController::class, 'showImportForm']);
+
+// JSON Import Routes
+Route::get('sample-analyses/import-json', [SampleAnalysisController::class, 'showImportForm'])->name('sample-analyses.import-json');
+Route::post('sample-analyses/import-json', [SampleAnalysisController::class, 'importJson'])->name('sample-analyses.import-json.submit');

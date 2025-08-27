@@ -6,6 +6,7 @@ use App\Models\SampleAnalysis;
 use App\Services\PdfService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SampleAnalysisController extends Controller
 {
@@ -184,5 +185,109 @@ class SampleAnalysisController extends Controller
             'A4',
             'portrait'
         );
+    }
+
+    /**
+     * Show the JSON import form
+     */
+    public function showImportForm()
+    {
+        \Log::info('showImportForm method called');
+        if (view()->exists('sample-analyses.import_json')) {
+            return view('sample-analyses.import_json');
+        }
+        \Log::error('View not found: sample-analyses.import_json');
+        abort(404, 'The import view could not be found.');
+    }
+
+    /**
+     * Process JSON import
+     */
+    public function importJson(Request $request)
+    {
+        $request->validate([
+            'json' => 'required|json'
+        ]);
+
+        try {
+            $data = json_decode($request->json, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception('Invalid JSON format: ' . json_last_error_msg());
+            }
+            
+            $imported = 0;
+            $errors = [];
+            
+            if (is_array($data)) {
+                foreach ($data as $index => $item) {
+                    try {
+                        $this->importAnalysis($item);
+                        $imported++;
+                    } catch (\Exception $e) {
+                        $errors[] = "Row {$index}: " . $e->getMessage();
+                    }
+                }
+            } else {
+                $this->importAnalysis($data);
+                $imported++;
+            }
+
+            $message = "Successfully imported {$imported} records.";
+            if (!empty($errors)) {
+                $message .= ' ' . count($errors) . ' records failed to import.';
+                return back()->with('warning', $message)->with('errors', $errors);
+            }
+
+            return redirect()->route('sample-analyses.index')
+                ->with('success', $message);
+                
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error importing data: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Import a single analysis
+     */
+    protected function importAnalysis($data)
+    {
+        // Validate required fields
+        $validator = Validator::make($data, [
+            'client' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255',
+            'batch_number' => 'required|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Exception(implode(' ', $validator->errors()->all()));
+        }
+
+        // Map and prepare the data
+        $mappedData = [
+            'client' => $data['client'] ?? null,
+            'product_name' => $data['product_name'] ?? null,
+            'batch_number' => $data['batch_number'] ?? null,
+            'sampling_date' => $data['sampling_date'] ?? null,
+            'sampling_location' => $data['sampling_location'] ?? null,
+            'lab_receipt_datetime' => $data['lab_receipt_datetime'] ?? null,
+            'receipt_temperature' => $data['receipt_temperature'] ?? null,
+            'storage_conditions' => $data['storage_conditions'] ?? null,
+            'analysis_date' => $data['analysis_date'] ?? null,
+            'supplier_manufacturer' => $data['supplier_manufacturer'] ?? null,
+            'packaging' => $data['packaging'] ?? null,
+            'approval_number' => $data['approval_number'] ?? null,
+            'fishing_type' => $data['fishing_type'] ?? null,
+            'species' => $data['species'] ?? null,
+            'origin' => $data['origin'] ?? null,
+            'packaging_date' => $data['packaging_date'] ?? null,
+            'best_before_date' => $data['best_before_date'] ?? null,
+            'imp' => $data['imp'] ?? null,
+            'hx' => $data['hx'] ?? null,
+            'nucleotide_note' => $data['nucleotide_note'] ?? null,
+        ];
+
+        // Create the analysis
+        SampleAnalysis::create($mappedData);
     }
 }
