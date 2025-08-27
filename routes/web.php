@@ -15,3 +15,7 @@ Route::resource('companies', CompanyController::class);
 Route::resource('sample-analyses', SampleAnalysisController::class);
 Route::post('sample-analyses/{sampleAnalysis}/clone', [SampleAnalysisController::class, 'clone'])
     ->name('sample-analyses.clone');
+
+// Sample Analysis PDF Export
+Route::get('/sample-analyses/{sampleAnalysis}/export-pdf', [SampleAnalysisController::class, 'exportPdf'])
+    ->name('sample-analyses.export-pdf');

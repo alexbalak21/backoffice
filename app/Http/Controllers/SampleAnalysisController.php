@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SampleAnalysis;
+use App\Services\PdfService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -163,5 +164,25 @@ class SampleAnalysisController extends Controller
         return redirect()->route('sample-analyses.create')
             ->with('old', $attributes)
             ->with('success', 'Please review and save the copied analysis.');
+    }
+
+    /**
+     * Export analysis to PDF
+     *
+     * @param  \App\Models\SampleAnalysis  $sampleAnalysis
+     * @return \Illuminate\Http\Response
+     */
+    public function exportPdf(SampleAnalysis $sampleAnalysis)
+    {
+        $pdf = app('pdf');
+        $filename = 'analysis_' . $sampleAnalysis->id . '_' . now()->format('Ymd_His') . '.pdf';
+        
+        return $pdf->generatePdf(
+            'pdf.templates.analysis',
+            ['analysis' => $sampleAnalysis],
+            $filename,
+            'A4',
+            'portrait'
+        );
     }
 }

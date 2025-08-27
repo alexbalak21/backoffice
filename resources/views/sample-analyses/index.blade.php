@@ -38,6 +38,9 @@
                                         <a href="{{ route('sample-analyses.edit', $analysis) }}" class="btn btn-warning" title="Modifier">
                                             <i class="fa-solid fa-edit"></i>
                                         </a>
+                                        <a href="{{ route('sample-analyses.export-pdf', $analysis) }}" class="btn btn-primary" title="Exporter en PDF" target="_blank">
+                                            <i class="fa-solid fa-file-pdf"></i>
+                                        </a>
                                         <button type="button" class="btn btn-secondary" title="Copier" onclick="event.stopPropagation(); document.getElementById('clone-form-{{ $analysis->id }}').submit();">
                                             <i class="fa-solid fa-copy"></i>
                                         </button>
