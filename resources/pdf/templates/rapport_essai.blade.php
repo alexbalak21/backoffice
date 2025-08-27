@@ -3,107 +3,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Rapport d'Essai - {{ $analysis->product_name ?? 'Analyse' }}</title>
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            font-size: 12px; 
-            margin: 0;
-            padding: 0;
-        }
-        .header { 
-            text-align: center; 
-            margin-bottom: 20px; 
-            position: relative;
-        }
-        .header h1 { 
-            margin: 0; 
-            font-size: 24px; 
-        }
-        .header p { 
-            margin: 5px 0; 
-        }
-        .section { 
-            margin-bottom: 15px; 
-        }
-        .section h2 { 
-            font-size: 16px; 
-            border-bottom: 1px solid #000; 
-            padding-bottom: 5px; 
-        }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-bottom: 15px;
-            border: 1px solid #000;
-        }
-        th { 
-            background-color: #f2f2f2; 
-            text-align: left; 
-            padding: 8px; 
-            border: 1px solid #000;
-        }
-        td { 
-            padding: 8px; 
-            border: 1px solid #000; 
-        }
-        .footer { 
-            text-align: center; 
-            margin-top: 30px; 
-            font-size: 10px; 
-            color: #666; 
-        }
-        .logo { 
-            height: 65px;
-            width: auto;
-            margin-bottom: 20px; 
-        }
-        .address { 
-            margin-bottom: 20px; 
-            text-align: center; 
-            font-size: 12px;
-        }
-        .title { 
-            text-align: center; 
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        .ref {
-            color: #3771C8;
-            font-weight: bold;
-        }
-        .name {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        .client {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            text-align: left;
-            border: 1px solid #000;
-            padding: 10px;
-            font-size: 12px;
-        }
-        .features-title, .results-title {
-            background-color: #b3c6e7; 
-            display: inline-block; 
-            padding: 4px 8px; 
-            margin: 20px 0 10px 0;
-            font-weight: bold;
-        }
-        .validation {
-            margin-top: 30px;
-            text-align: right;
-        }
-        .validation-title {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
     <div class="header">
-        <img class="logo" src="img/logo_underline.png" alt="novocib logo">
+        @php
+            $logoPath = base_path('public/img/logo_underline.png');
+            $logoData = base64_encode(file_get_contents($logoPath));
+            $logoMime = mime_content_type($logoPath);
+        @endphp
+        <img class="logo" src="data:{{ $logoMime }};base64,{{ $logoData }}" alt="novocib logo">
         <div class="address">
             <strong>NOVOCIB</strong><br>
             Criée Boulogne<br>
@@ -242,5 +150,102 @@
             <p>Document généré le {{ now()->format('d/m/Y H:i') }} - NOVOCIB-{{ $analysis->id }}-{{ date('Ymd') }}</p>
         </div>
     </main>
+        <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            font-size: 12px; 
+            margin: 0;
+            padding: 0;
+        }
+        .header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            position: relative;
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 24px; 
+        }
+        .header p { 
+            margin: 5px 0; 
+        }
+        .section { 
+            margin-bottom: 15px; 
+        }
+        .section h2 { 
+            font-size: 16px; 
+            border-bottom: 1px solid #000; 
+            padding-bottom: 5px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 15px;
+            border: 1px solid #000;
+        }
+        th { 
+            background-color: #f2f2f2; 
+            text-align: left; 
+            padding: 8px; 
+            border: 1px solid #000;
+        }
+        td { 
+            padding: 8px; 
+            border: 1px solid #000; 
+        }
+        .footer { 
+            text-align: center; 
+            margin-top: 30px; 
+            font-size: 10px; 
+            color: #666; 
+        }
+        .logo { 
+            height: 65px;
+            width: auto;
+            margin-bottom: 20px; 
+        }
+        .address { 
+            margin-bottom: 20px; 
+            text-align: center; 
+            font-size: 12px;
+        }
+        .title { 
+            text-align: center; 
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .ref {
+            color: #3771C8;
+            font-weight: bold;
+        }
+        .name {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .client {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-align: left;
+            border: 1px solid #000;
+            padding: 10px;
+            font-size: 12px;
+        }
+        .features-title, .results-title {
+            background-color: #b3c6e7; 
+            display: inline-block; 
+            padding: 4px 8px; 
+            margin: 20px 0 10px 0;
+            font-weight: bold;
+        }
+        .validation {
+            margin-top: 30px;
+            text-align: right;
+        }
+        .validation-title {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
 </body>
 </html>
