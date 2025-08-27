@@ -179,7 +179,7 @@ class SampleAnalysisController extends Controller
         $filename = 'analysis_' . $sampleAnalysis->id . '_' . now()->format('Ymd_His') . '.pdf';
         
         return $pdf->generatePdf(
-            'pdf.templates.analysis',
+            'pdf.templates.analysis',  // This looks in resources/views/pdf/templates/analysis.blade.php
             ['analysis' => $sampleAnalysis],
             $filename,
             'A4',

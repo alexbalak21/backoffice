@@ -32,8 +32,14 @@ class PdfService
      */
     public function generatePdf($viewName, $data = [], $filename = 'document.pdf', $paperSize = 'A4', $orientation = 'portrait')
     {
+        // Add the pdf directory to the view finder paths
+        View::addLocation(resource_path('pdf'));
+        
         // Render the view
         $html = View::make($viewName, $data)->render();
+        
+        // Reset the view finder paths
+        View::addLocation(resource_path('views'));
         
         // Load HTML to Dompdf
         $this->dompdf->loadHtml($html);
