@@ -175,16 +175,32 @@ class SampleAnalysisController extends Controller
      */
     public function exportPdf(SampleAnalysis $sampleAnalysis)
     {
-        $pdf = app('pdf');
+        // Get the HTML content directly from the template file
+        $templatePath = resource_path('pdf/templates/rapport_essai.blade.php');
+        $html = view()->file($templatePath, [
+            'analysis' => $sampleAnalysis,
+            'refNumber' => 'NOVOCIB-' . $sampleAnalysis->id . '-' . date('Ymd'),
+            'analysisDate' => $sampleAnalysis->analysis_date ? \Carbon\Carbon::parse($sampleAnalysis->analysis_date)->format('d/m/Y') : 'N/A',
+            'samplingDate' => $sampleAnalysis->sampling_date ? \Carbon\Carbon::parse($sampleAnalysis->sampling_date)->format('d/m/Y') : 'N/A',
+            'labReceiptDate' => $sampleAnalysis->lab_receipt_datetime ? \Carbon\Carbon::parse($sampleAnalysis->lab_receipt_datetime)->format('d/m/Y H:i') : 'N/A',
+            'packagingDate' => $sampleAnalysis->packaging_date ? \Carbon\Carbon::parse($sampleAnalysis->packaging_date)->format('d/m/Y') : 'N/A',
+            'bestBeforeDate' => $sampleAnalysis->best_before_date ? \Carbon\Carbon::parse($sampleAnalysis->best_before_date)->format('d/m/Y') : 'N/A',
+            'nucleotideNotes' => !empty($sampleAnalysis->nucleotide_note) ? explode("\n", $sampleAnalysis->nucleotide_note) : []
+        ])->render();
+        
+        // Use the DomPDF facade
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        
         $filename = 'analysis_' . $sampleAnalysis->id . '_' . now()->format('Ymd_His') . '.pdf';
         
-        return $pdf->generatePdf(
-            'pdf.templates.analysis',  // This looks in resources/views/pdf/templates/analysis.blade.php
-            ['analysis' => $sampleAnalysis],
-            $filename,
-            'A4',
-            'portrait'
-        );
+        // Display the PDF in the browser
+        return $dompdf->stream($filename, [
+            'Attachment' => false, // Set to false to display in browser
+            'isRemoteEnabled' => true // Enable remote images if needed
+        ]);
     }
 
     /**
