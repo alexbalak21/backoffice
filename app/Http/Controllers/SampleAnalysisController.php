@@ -176,7 +176,7 @@ class SampleAnalysisController extends Controller
     public function exportPdf(SampleAnalysis $sampleAnalysis)
     {
         // Get the HTML content directly from the template file
-        $templatePath = resource_path('pdf/templates/rapport_essai.blade.php');
+        $templatePath = resource_path('pdf/templates/modele_rapport.blade.php');
         $html = view()->file($templatePath, [
             'analysis' => $sampleAnalysis,
             'refNumber' => 'NOVOCIB-' . $sampleAnalysis->id . '-' . date('Ymd'),
