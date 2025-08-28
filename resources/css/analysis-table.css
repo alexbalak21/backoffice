@@ -16,3 +16,8 @@
 .analysis-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+
+.analysis-table tbody{
+  background-color: white;
+}
+
