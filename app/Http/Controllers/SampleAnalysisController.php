@@ -222,31 +222,43 @@ class SampleAnalysisController extends Controller
     public function importJson(Request $request)
     {
         $request->validate([
-            'json' => 'required|json'
+            'json' => 'required|string'
         ]);
 
         try {
-            $data = json_decode($request->json, true);
+            // Get the raw JSON string
+            $jsonString = $request->input('json');
             
+            // Clean the JSON string
+            $jsonString = stripslashes($jsonString);
+            $jsonString = trim($jsonString, '\"');
+            
+            // Decode the JSON string
+            $data = json_decode($jsonString, true);
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new \Exception('Invalid JSON format: ' . json_last_error_msg());
             }
-            
+
+            // If the input is a single object, convert it to an array with one item
+            if (!is_array($data) || (isset($data[0]) === false && !empty($data))) {
+                $data = [$data];
+            } elseif (empty($data)) {
+                throw new \Exception('No valid data found in the JSON');
+            }
+
             $imported = 0;
             $errors = [];
             
-            if (is_array($data)) {
-                foreach ($data as $index => $item) {
-                    try {
+            foreach ($data as $index => $item) {
+                try {
+                    if (is_array($item) && !empty($item)) {
                         $this->importAnalysis($item);
                         $imported++;
-                    } catch (\Exception $e) {
-                        $errors[] = "Row {$index}: " . $e->getMessage();
                     }
+                } catch (\Exception $e) {
+                    $errors[] = "Row " . ($index + 1) . ": " . $e->getMessage();
                 }
-            } else {
-                $this->importAnalysis($data);
-                $imported++;
             }
 
             $message = "Successfully imported {$imported} records.";
@@ -259,7 +271,7 @@ class SampleAnalysisController extends Controller
                 ->with('success', $message);
                 
         } catch (\Exception $e) {
-            return back()->with('error', 'Error importing data: ' . $e->getMessage());
+            return back()->with('error', 'Error importing data: ' . $e->getMessage())->withInput();
         }
     }
 
