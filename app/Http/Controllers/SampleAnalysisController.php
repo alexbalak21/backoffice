@@ -79,6 +79,11 @@ class SampleAnalysisController extends Controller
         return view('sample-analyses.show', compact('sampleAnalysis'));
     }
 
+    public function analysisTable()
+    {
+        return view('sample-analyses.analysis-table');
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

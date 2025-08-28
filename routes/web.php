@@ -28,3 +28,7 @@ Route::post('/import-json', [SampleAnalysisController::class, 'importJson'])->na
 // PDF Management
 Route::resource('pdfs', \App\Http\Controllers\PdfController::class);
 Route::get('pdfs/{pdf}/download', [\App\Http\Controllers\PdfController::class, 'download'])->name('pdfs.download');
+
+//analysis-table
+Route::get('analysis-table', [SampleAnalysisController::class, 'analysisTable'])->name('analysis-table');
+

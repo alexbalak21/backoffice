@@ -1,7 +1,7 @@
 <x-layout>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1><i class="fa-solid fa-flask"></i> Détails de l'analyse</h1>
+            <h1><i class="fa-solid fa-flask"></i> Détails de l'analyse #{{ $sampleAnalysis->id }}</h1>
             <div>
                 <a href="{{ route('sample-analyses.create') }}" class="btn btn-success">
                     <i class="fa-solid fa-plus"></i> Nouvelle analyse
@@ -29,60 +29,114 @@
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Analyse #{{ $sampleAnalysis->id }}</h5>
-                
-                <div class="mb-4">
-                    <h6>Client</h6>
-                    <p class="mb-0">{{ $sampleAnalysis->client ?? 'Non spécifié' }}</p>
-                </div>
-                
-                <div class="row mt-4">
+                <div class="row">
                     <div class="col-md-6">
-                        <h6>Informations de prélèvement</h6>
-                        <p><strong>Date :</strong> {{ $sampleAnalysis->sampling_date ? $sampleAnalysis->sampling_date->format('d/m/Y') : 'Non spécifiée' }}</p>
-                        <p><strong>Lieu :</strong> {{ $sampleAnalysis->sampling_location ?? 'Non spécifié' }}</p>
-                        
-                        <h6 class="mt-4">Informations du produit</h6>
-                        <p><strong>Nom :</strong> {{ $sampleAnalysis->product_name }}</p>
-                        <p><strong>Espèce :</strong> {{ $sampleAnalysis->species }}</p>
-                        <p><strong>Origine :</strong> {{ $sampleAnalysis->origin }}</p>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <h6>Détails du laboratoire</h6>
-                        <p><strong>Reçu le :</strong> {{ $sampleAnalysis->lab_receipt_datetime ? $sampleAnalysis->lab_receipt_datetime->format('d/m/Y H:i') : 'Non spécifié' }}</p>
-                        <p><strong>Température :</strong> {{ $sampleAnalysis->receipt_temperature ? number_format($sampleAnalysis->receipt_temperature, 2, ',', ' ') . '°C' : 'Non spécifiée' }}</p>
-                        <p><strong>Stockage :</strong> {{ $sampleAnalysis->storage_conditions ?? 'Non spécifié' }}</p>
-                        <p><strong>Analysé le :</strong> {{ $sampleAnalysis->analysis_date ? $sampleAnalysis->analysis_date->format('d/m/Y') : 'Non spécifié' }}</p>
+                        <div class="mb-4">
+                            <h5>Client</h5>
+                            <p class="mb-0">{{ $sampleAnalysis->client ?? 'Non spécifié' }}</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="row mt-4">
+
+                <div class="row">
                     <div class="col-md-6">
-                        <h6>Fournisseur et conditionnement</h6>
-                        <p><strong>Fournisseur :</strong> {{ $sampleAnalysis->supplier_manufacturer }}</p>
-                        <p><strong>Conditionnement :</strong> {{ $sampleAnalysis->packaging }}</p>
-                        <p><strong>N° de lot :</strong> {{ $sampleAnalysis->batch_number }}</p>
-                        @if($sampleAnalysis->packaging_date)
-                        <p><strong>Date d'emballage :</strong> {{ $sampleAnalysis->packaging_date->format('d/m/Y') }}</p>
-                        @endif
-                        @if($sampleAnalysis->best_before_date)
-                        <p><strong>À consommer jusqu'au :</strong> {{ $sampleAnalysis->best_before_date->format('d/m/Y') }}</p>
-                        @endif
-                        @if($sampleAnalysis->approval_number)
-                            <p><strong>N° d'agrément :</strong> {{ $sampleAnalysis->approval_number }}</p>
-                        @endif
+                        <h5 class="mb-3">Date et lieu de prélèvement</h5>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Date et heure de prélèvement :</strong></p>
+                            <p>{{ $sampleAnalysis->sampling_date ? $sampleAnalysis->sampling_date->format('d/m/Y H:i') : 'Non spécifiée' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Lieu de prélèvement :</strong></p>
+                            <p>{{ $sampleAnalysis->sampling_location ?? 'Non spécifié' }}</p>
+                        </div>
                     </div>
-                    
+
                     <div class="col-md-6">
-                        <h6>Analyse des nucléotides</h6>
-                        <p><strong>IMP :</strong> {{ $sampleAnalysis->imp }}</p>
-                        <p><strong>Hx :</strong> {{ $sampleAnalysis->hx }}</p>
-                        <p><strong>Note :</strong> {{ $sampleAnalysis->nucleotide_note ?? 'Aucune note' }}</p>
+                        <h5 class="mb-3">Date, heure et T°C à la réception au laboratoire</h5>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Date et heure de réception :</strong></p>
+                            <p>{{ $sampleAnalysis->lab_receipt_datetime ? $sampleAnalysis->lab_receipt_datetime->format('d/m/Y H:i') : 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Température à la réception :</strong></p>
+                            <p>{{ $sampleAnalysis->receipt_temperature ? number_format($sampleAnalysis->receipt_temperature, 2, ',', ' ') . ' °C' : 'Non spécifiée' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Conditions de conservation :</strong></p>
+                            <p>{{ $sampleAnalysis->storage_conditions ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Date et heure de mise en analyse :</strong></p>
+                            <p>{{ $sampleAnalysis->analysis_date ? $sampleAnalysis->analysis_date->format('d/m/Y H:i') : 'Non spécifié' }}</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="mt-4">
+
+                <hr class="my-4">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="mb-3">Informations sur le produit</h5>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Fournisseur/Fabricant :</strong></p>
+                            <p>{{ $sampleAnalysis->supplier_manufacturer ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Conditionnement :</strong></p>
+                            <p>{{ $sampleAnalysis->packaging ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>N° d'agrément :</strong></p>
+                            <p>{{ $sampleAnalysis->approval_number ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>N° de lot :</strong></p>
+                            <p>{{ $sampleAnalysis->batch_number ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Type de pêche :</strong></p>
+                            <p>{{ $sampleAnalysis->analysis_type ?? 'Non spécifié' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-3">Informations supplémentaires</h5>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Nom du produit :</strong></p>
+                            <p>{{ $sampleAnalysis->product_name ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Espèce :</strong></p>
+                            <p>{{ $sampleAnalysis->species ?? 'Non spécifiée' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Origine :</strong></p>
+                            <p>{{ $sampleAnalysis->origin ?? 'Non spécifiée' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Date d'emballage :</strong></p>
+                            <p>{{ $sampleAnalysis->packaging_date ? $sampleAnalysis->packaging_date->format('d/m/Y') : 'Non spécifiée' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>À consommer jusqu'au :</strong></p>
+                            <p>{{ $sampleAnalysis->best_before_date ? $sampleAnalysis->best_before_date->format('d/m/Y') : 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>IMP :</strong></p>
+                            <p>{{ $sampleAnalysis->imp ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>HX :</strong></p>
+                            <p>{{ $sampleAnalysis->hx ?? 'Non spécifié' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="mb-1"><strong>Note sur les nucléotides :</strong></p>
+                            <p>{{ $sampleAnalysis->nucleotide_note ? nl2br(e($sampleAnalysis->nucleotide_note)) : 'Aucune note' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-top">
                     <a href="{{ route('sample-analyses.index') }}" class="btn btn-secondary">
                         <i class="fa-solid fa-arrow-left"></i> Retour à la liste
                     </a>
@@ -91,9 +145,9 @@
             
             <div class="card-footer text-muted">
                 <small>
-                    Created: {{ $sampleAnalysis->created_at->format('Y-m-d H:i') }}
+                    Créé le : {{ $sampleAnalysis->created_at->format('d/m/Y H:i') }}
                     @if($sampleAnalysis->created_at != $sampleAnalysis->updated_at)
-                        | Last updated: {{ $sampleAnalysis->updated_at->format('Y-m-d H:i') }}
+                        | Dernière mise à jour : {{ $sampleAnalysis->updated_at->format('d/m/Y H:i') }}
                     @endif
                 </small>
             </div>

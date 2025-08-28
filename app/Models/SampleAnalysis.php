@@ -30,9 +30,9 @@ class SampleAnalysis extends Model
     ];
 
     protected $casts = [
-        'sampling_date' => 'date',
+        'sampling_date' => 'datetime',
         'lab_receipt_datetime' => 'datetime',
-        'analysis_date' => 'date',
+        'analysis_date' => 'datetime',
         'packaging_date' => 'date',
         'best_before_date' => 'date',
         'receipt_temperature' => 'decimal:2'
