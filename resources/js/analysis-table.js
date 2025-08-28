@@ -1,5 +1,27 @@
 // Handle analysis table functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // First, fetch and log the data from the API
+    try {
+        const response = await fetch('http://localhost:8000/api/echantillon-analyses', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`HTTP error! status: ${response.status}`, { cause: errorData });
+        }
+        const data = await response.json();
+        console.log('Fetched data from API:', data);
+    } catch (error) {
+        console.error('Error fetching data from API:', error);
+        if (error.cause) {
+            console.error('Error details:', error.cause);
+        }
+    }
+
     const saveBtn = document.getElementById('saveBtn');
     if (!saveBtn) return;
 

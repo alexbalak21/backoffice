@@ -13,9 +13,26 @@ class EchantillonAnalyseController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Display a listing of the echantillon analyses.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-        //
+        try {
+            $analyses = EchantillonAnalyse::all();
+            return response()->json([
+                'success' => true,
+                'data' => $analyses
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to fetch echantillon analyses',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

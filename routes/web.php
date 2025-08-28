@@ -29,9 +29,6 @@ Route::post('/import-json', [SampleAnalysisController::class, 'importJson'])->na
 Route::resource('pdfs', \App\Http\Controllers\PdfController::class);
 Route::get('pdfs/{pdf}/download', [\App\Http\Controllers\PdfController::class, 'download'])->name('pdfs.download');
 
-// Echantillon Analyse API
-Route::post('/api/echantillon-analyses', [\App\Http\Controllers\Api\EchantillonAnalyseController::class, 'store'])
-    ->name('api.echantillon-analyses.store');
 
 //analysis-table
 Route::get('analysis-table', [SampleAnalysisController::class, 'analysisTable'])->name('analysis-table');
