@@ -32,28 +32,73 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr class="data-row">
           <td contenteditable="true" data-label="Date Heure prélèvement"></td>
-          <td contenteditable="true" data-label="Lieu de prélèvement"></td>
-          <td contenteditable="true" data-label="Date Heure réception"></td>
-          <td contenteditable="true" data-label="T° à la réception"></td>
-          <td contenteditable="true" data-label="Conditions de conservation"></td>
-          <td contenteditable="true" data-label="Date de mise en analyse"></td>
-          <td contenteditable="true" data-label="Fournisseur / Fabricant"></td>
-          <td contenteditable="true" data-label="Conditionnement"></td>
-          <td contenteditable="true" data-label="Agrément"></td>
-          <td contenteditable="true" data-label="Lot"></td>
-          <td contenteditable="true" data-label="Type de pêche"></td>
-          <td contenteditable="true" data-label="Nom de produit"></td>
-          <td contenteditable="true" data-label="Espèce"></td>
-          <td contenteditable="true" data-label="Origine"></td>
-          <td contenteditable="true" data-label="Date d'emballage"></td>
-          <td contenteditable="true" data-label="À consommer jusqu'au"></td>
-          <td contenteditable="true" data-label="IMP"></td>
-          <td contenteditable="true" data-label="HX"></td>
-          <td contenteditable="true" data-label="Note Nucléotide"></td>
+          <td contenteditable="true" data-label="date_heure_prelevement"></td>
+          <td contenteditable="true" data-label="date_heure_reception"></td>
+          <td contenteditable="true" data-label="temperature_reception"></td>
+          <td contenteditable="true" data-label="conditions_conservation"></td>
+          <td contenteditable="true" data-label="date_mise_en_analyse"></td>
+          <td contenteditable="true" data-label="fournisseur_fabricant"></td>
+          <td contenteditable="true" data-label="conditionnement"></td>
+          <td contenteditable="true" data-label="agrement"></td>
+          <td contenteditable="true" data-label="lot"></td>
+          <td contenteditable="true" data-label="type_de_peche"></td>
+          <td contenteditable="true" data-label="nom_de_produit"></td>
+          <td contenteditable="true" data-label="espece"></td>
+          <td contenteditable="true" data-label="origine"></td>
+          <td contenteditable="true" data-label="date_emballage"></td>
+          <td contenteditable="true" data-label="a_consommer_jusqu_au"></td>
+          <td contenteditable="true" data-label="imp"></td>
+          <td contenteditable="true" data-label="hx"></td>
+          <td contenteditable="true" data-label="note_nucleotide"></td>
         </tr>
       </tbody>
     </table>
     </div>
+    <div class="mt-4">
+        @if($echantillons->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            @foreach($echantillons->first()->getAttributes() as $key => $value)
+                                <th>{{ $key }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($echantillons as $echantillon)
+                            <tr>
+                                @foreach($echantillon->getAttributes() as $value)
+                                    <td>{{ $value }}</td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="alert alert-info">Aucun échantillon trouvé.</div>
+        @endif
+    </div>
+
+    @push('scripts')
+    <script>
+      console.log("Test");
+      
+        // Make the data available to JavaScript
+        window.echantillonsData = {!! $echantillonsJson !!};
+        
+        // Now you can use the data in your JavaScript files
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Echantillons data:', window.echantillonsData);
+            
+            // Example: Access the data
+            // window.echantillonsData.forEach(function(echantillon) {
+            //     console.log(echantillon);
+            // });
+        });
+    </script>
+    @endpush
 </x-layout>

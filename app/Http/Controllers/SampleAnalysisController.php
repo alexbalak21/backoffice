@@ -81,7 +81,13 @@ class SampleAnalysisController extends Controller
 
     public function analysisTable()
     {
-        return view('sample-analyses.analysis-table');
+        $data = \App\Models\EchantillonAnalyse::all();
+        $jsonData = $data->toJson();
+        
+        return view('sample-analyses.analysis-table', [
+            'echantillons' => $data,
+            'echantillonsJson' => $jsonData
+        ]);
     }
 
     /**
