@@ -30,7 +30,7 @@
                     <a href="/sample-analyses" class="sidebar-link {{ Request::is('sample-analyses') ? 'active' : '' }}"><i class="fa-solid fa-flask"></i><span>Analyses</span></a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="/analysis-table" class="sidebar-link {{ Request::is('analysis-table') ? 'active' : '' }}"><i class="fa-solid fa-table"></i><span>Analysis Table</span></a>
+                    <a href="{{ route('analysis-table') }}" class="sidebar-link {{ Request::is('echantillon-analyses/analysis-table*') ? 'active' : '' }}"><i class="fa-solid fa-table"></i><span>Analysis Table</span></a>
                 </li>
                 <li class="sidebar-item">
                     <a href="{{ route('pdfs.index') }}" class="sidebar-link {{ Request::is('pdfs') ? 'active' : '' }}"><i class="fa-solid fa-file-pdf"></i><span>Reports</span></a>

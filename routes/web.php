@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\SampleAnalysisController;
+use App\Http\Controllers\EchantillonAnalyseController;
 
 // Home route
 Route::get('/', function () {
@@ -30,6 +31,9 @@ Route::resource('pdfs', \App\Http\Controllers\PdfController::class);
 Route::get('pdfs/{pdf}/download', [\App\Http\Controllers\PdfController::class, 'download'])->name('pdfs.download');
 
 
-//analysis-table
-Route::get('analysis-table', [SampleAnalysisController::class, 'analysisTable'])->name('analysis-table');
+// Echantillon Analyse routes
+Route::prefix('echantillon-analyses')->group(function () {
+    Route::get('analysis-table', [EchantillonAnalyseController::class, 'analysisTable'])->name('analysis-table');
+    Route::post('/', [EchantillonAnalyseController::class, 'store'])->name('echantillon-analyses.store');
+});
 
