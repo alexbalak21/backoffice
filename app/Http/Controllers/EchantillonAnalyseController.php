@@ -44,12 +44,19 @@ class EchantillonAnalyseController extends Controller
      */
     public function store(Request $request)
     {
+        // Handle both JSON and form-data requests
         $data = $request->input('analyses');
+        
+        // If data is a JSON string, decode it
+        if (is_string($data)) {
+            $data = json_decode($data, true);
+        }
         
         if (!is_array($data)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Format de données invalide'
+                'message' => 'Format de données invalide',
+                'received_data' => $request->all() // For debugging
             ], 400);
         }
         

@@ -38,7 +38,7 @@
       <tbody>
       @foreach ($echantillons as $echantillon)
           <tr>
-
+            <td>{{ $echantillon->nom_client }}</td>
               <td>{{ $echantillon->date_heure_prelevement }}</td>
               <td>{{ $echantillon->lieu_prelevement }}</td>
               <td>{{ $echantillon->date_heure_reception }}</td>

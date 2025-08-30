@@ -10,11 +10,36 @@ class EchantillonAnalyse extends Model
     use SoftDeletes;
 
     protected $table = 'echantillon_analyse';
+    
+    // Map form field names to database column names
+    protected $attributes = [
+        'lieu_prelevement' => null, // Form field name
+    ];
+    
+    // Map form field names to database column names
+    protected $appends = ['lieu_prelevement'];
+    
+    /**
+     * Get the lieu_prelevement attribute (maps to lieu_de_prelevement in database)
+     */
+    public function getLieuPrelevementAttribute()
+    {
+        return $this->attributes['lieu_de_prelevement'] ?? null;
+    }
+    
+    /**
+     * Set the lieu_prelevement attribute (maps to lieu_de_prelevement in database)
+     */
+    public function setLieuPrelevementAttribute($value)
+    {
+        $this->attributes['lieu_de_prelevement'] = $value;
+    }
 
+    // Map form field names to database column names
     protected $fillable = [
         'nom_client',
         'date_heure_prelevement',
-        'lieu_de_prelevement',
+        'lieu_de_prelevement', // Database column name
         'date_heure_reception',
         'temperature_reception',
         'conditions_conservation',
@@ -45,4 +70,143 @@ class EchantillonAnalyse extends Model
         'temperature_reception' => 'decimal:2',
         'rapport_genere' => 'boolean'
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'date_heure_prelevement',
+        'date_heure_reception',
+        'date_mise_en_analyse',
+        'date_emballage',
+        'a_consommer_jusqu_au',
+    ];
+
+    /**
+     * Parse the date_heure_prelevement attribute.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDateHeurePrelevementAttribute($value)
+    {
+        $this->attributes['date_heure_prelevement'] = $value ? \Carbon\Carbon::createFromFormat('d/m/y H:i', $value) : null;
+    }
+
+    /**
+     * Parse the date_heure_reception attribute.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDateHeureReceptionAttribute($value)
+    {
+        $this->attributes['date_heure_reception'] = $value ? \Carbon\Carbon::createFromFormat('d/m/y H:i', $value) : null;
+    }
+
+    /**
+     * Parse the date_mise_en_analyse attribute.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDateMiseEnAnalyseAttribute($value)
+    {
+        $this->attributes['date_mise_en_analyse'] = $value ? \Carbon\Carbon::createFromFormat('d/m/y H:i', $value) : null;
+    }
+
+    /**
+     * Parse the date_emballage attribute.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDateEmballageAttribute($value)
+    {
+        $this->attributes['date_emballage'] = $value ? \Carbon\Carbon::createFromFormat('d/m/y', $value) : null;
+    }
+
+    /**
+     * Parse the a_consommer_jusqu_au attribute.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setAConsommerJusquAuAttribute($value)
+    {
+        $this->attributes['a_consommer_jusqu_au'] = $value ? \Carbon\Carbon::createFromFormat('d/m/y', $value) : null;
+    }
+
+    /**
+     * Format date_heure_prelevement for display.
+     *
+     * @param  mixed  $value
+     * @return string|null
+     */
+    /**
+     * Format date_heure_prelevement for display.
+     *
+     * @param  mixed  $value
+     * @return string|null
+     */
+    public function getDateHeurePrelevementAttribute($value)
+    {
+        if (!$value) return null;
+        $date = is_string($value) ? \Carbon\Carbon::parse($value) : $value;
+        return $date->format('d/m/y H:i');
+    }
+
+    /**
+     * Format date_heure_reception for display.
+     *
+     * @param  mixed  $value
+     * @return string|null
+     */
+    public function getDateHeureReceptionAttribute($value)
+    {
+        if (!$value) return null;
+        $date = is_string($value) ? \Carbon\Carbon::parse($value) : $value;
+        return $date->format('d/m/y H:i');
+    }
+
+    /**
+     * Format date_mise_en_analyse for display.
+     *
+     * @param  mixed  $value
+     * @return string|null
+     */
+    public function getDateMiseEnAnalyseAttribute($value)
+    {
+        if (!$value) return null;
+        $date = is_string($value) ? \Carbon\Carbon::parse($value) : $value;
+        return $date->format('d/m/y H:i');
+    }
+
+    /**
+     * Format date_emballage for display.
+     *
+     * @param  mixed  $value
+     * @return string|null
+     */
+    public function getDateEmballageAttribute($value)
+    {
+        if (!$value) return null;
+        $date = is_string($value) ? \Carbon\Carbon::parse($value) : $value;
+        return $date->format('d/m/y');
+    }
+
+    /**
+     * Format a_consommer_jusqu_au for display.
+     *
+     * @param  mixed  $value
+     * @return string|null
+     */
+    public function getAConsommerJusquAuAttribute($value)
+    {
+        if (!$value) return null;
+        $date = is_string($value) ? \Carbon\Carbon::parse($value) : $value;
+        return $date->format('d/m/y');
+    }
 }
