@@ -10,9 +10,11 @@
                 </button>
                 <div id="saveStatus" class="mt-2"></div>
             </div>
-        <table id="editableTable" class="analysis-table">
+        <div class="table-container">
+            <table id="editableTable" class="analysis-table">
       <thead>
         <tr>
+          <th><i class="fa-solid fa-gear"></i></th>
           <th>Client</th>
           <th>Date Heure prélèvement</th>
           <th>Lieu de prélèvement</th>
@@ -37,7 +39,19 @@
       </thead>
       <tbody>
       @foreach ($echantillons as $echantillon)
-          <tr>
+          <tr data-id="{{ $echantillon->id }}">
+            <td>
+                <div class="dropdown">
+                    <a class="dropdown-toggle text-secondary user-select-none" id="row-{{ $echantillon->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </a>
+                    <ul class="dropdown-menu" id="dropdownMenu{{ $echantillon->id }}" aria-labelledby="row-{{ $echantillon->id }}">
+                        
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen"></i> Modifier</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash"></i> Supprimer</a></li>
+                    </ul>
+                </div>
+            </td>
             <td>{{ $echantillon->nom_client }}</td>
               <td>{{ $echantillon->date_heure_prelevement }}</td>
               <td>{{ $echantillon->lieu_prelevement }}</td>
@@ -61,6 +75,7 @@
           </tr>
       @endforeach
         <tr class="data-row">
+          <td></td>
           <td contenteditable="true" data-label="nom_client"></td>
           <td contenteditable="true" data-label="date_heure_prelevement"></td>
           <td contenteditable="true" data-label="lieu_prelevement"></td>
@@ -82,37 +97,13 @@
           <td contenteditable="true" data-label="hx"></td>
           <td contenteditable="true" data-label="note_nucleotide"></td>
         </tr>
-
-        @php
-          $columns = [
-        'nom_client',
-        'date_heure_prelevement',
-        'lieu_de_prelevement',
-        'date_heure_reception',
-        'temperature_reception',
-        'conditions_conservation',
-        'date_mise_en_analyse',
-        'fournisseur_fabricant',
-        'conditionnement',
-        'agrement',
-        'lot',
-        'type_de_peche',
-        'nom_de_produit',
-        'espece',
-        'origine',
-        'date_emballage',
-        'a_consommer_jusqu_au',
-        'imp',
-        'hx',
-        'note_nucleotide',
-        'rapport_genere',
-        'ref_rapport'
-    
-    ];
-        @endphp
       </tbody>
-    </table>
+            </table>
+        </div>
         </form>
+
+
+
     </div>
     <script>
       window.echantillonsData = {!! $echantillonsJson ?? '[]' !!};
