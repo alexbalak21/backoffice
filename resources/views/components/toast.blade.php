@@ -1,0 +1,6 @@
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    <div class="toast-body">
+        {{ $message }}
+    </div>
+</div>
