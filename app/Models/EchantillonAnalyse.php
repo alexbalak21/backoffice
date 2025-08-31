@@ -11,35 +11,11 @@ class EchantillonAnalyse extends Model
 
     protected $table = 'echantillon_analyse';
     
-    // Map form field names to database column names
-    protected $attributes = [
-        'lieu_prelevement' => null, // Form field name
-    ];
-    
-    // Map form field names to database column names
-    protected $appends = ['lieu_prelevement'];
-    
-    /**
-     * Get the lieu_prelevement attribute (maps to lieu_de_prelevement in database)
-     */
-    public function getLieuPrelevementAttribute()
-    {
-        return $this->attributes['lieu_de_prelevement'] ?? null;
-    }
-    
-    /**
-     * Set the lieu_prelevement attribute (maps to lieu_de_prelevement in database)
-     */
-    public function setLieuPrelevementAttribute($value)
-    {
-        $this->attributes['lieu_de_prelevement'] = $value;
-    }
-
-    // Map form field names to database column names
+    // Explicitly define the column name to avoid any ambiguity
     protected $fillable = [
         'nom_client',
         'date_heure_prelevement',
-        'lieu_de_prelevement', // Database column name
+        'lieu_de_prelevement',
         'date_heure_reception',
         'temperature_reception',
         'conditions_conservation',

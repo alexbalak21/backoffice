@@ -1,6 +1,7 @@
 <x-layout>
     @vite(['resources/css/analysis-table.css'])
     @vite(['resources/js/analysis-table.js'])
+    
     <div class="container-fluid">
         <form id="analysisForm" action="{{ route('echantillon-analyses.store') }}" method="POST">
             @csrf
@@ -54,7 +55,7 @@
             </td>
             <td>{{ $echantillon->nom_client }}</td>
               <td>{{ $echantillon->date_heure_prelevement }}</td>
-              <td>{{ $echantillon->lieu_prelevement }}</td>
+              <td>{{ $echantillon->lieu_de_prelevement }}</td>
               <td>{{ $echantillon->date_heure_reception }}</td>
               <td>{{ $echantillon->temperature_reception }}</td>
               <td>{{ $echantillon->conditions_conservation }}</td>
@@ -78,7 +79,7 @@
           <td></td>
           <td contenteditable="true" data-label="nom_client"></td>
           <td contenteditable="true" data-label="date_heure_prelevement"></td>
-          <td contenteditable="true" data-label="lieu_prelevement"></td>
+          <td contenteditable="true" data-label="lieu_de_prelevement"></td>
           <td contenteditable="true" data-label="date_heure_reception"></td>
           <td contenteditable="true" data-label="temperature_reception"></td>
           <td contenteditable="true" data-label="conditions_conservation"></td>
@@ -101,8 +102,6 @@
             </table>
         </div>
         </form>
-
-
 
     </div>
     <script>
@@ -149,8 +148,12 @@
           .then(data => {
               const statusDiv = document.getElementById('saveStatus');
               if (data.success) {
-                  statusDiv.textContent = 'Données enregistrées avec succès!';
+                  statusDiv.textContent = 'Données enregistrées avec succès! Redirection...';
                   statusDiv.className = 'alert alert-success mt-2';
+                  // Reload the page after a short delay to show the success message
+                  setTimeout(() => {
+                      window.location.reload();
+                  }, 100);
               } else {
                   throw new Error(data.message || 'Erreur lors de l\'enregistrement');
               }

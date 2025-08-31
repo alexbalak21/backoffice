@@ -17,20 +17,15 @@ class EchantillonAnalyseController extends Controller
     public function analysisTable()
     {
         try {
-            // Eager load any relationships if needed
-            $data = EchantillonAnalyse::with([])->latest()->get();
+            // Get fresh data from the database
+            $echantillons = EchantillonAnalyse::latest()->get();
             
-            // Convert to JSON with pretty print for better frontend readability
-            $jsonData = $data->toJson(JSON_PRETTY_PRINT);
-            
-            // Cache the results for better performance (1 hour)
-            $cachedData = cache()->remember('echantillons', now()->addHour(), function () use ($data) {
-                return $data;
-            });
+            // Convert to JSON with pretty print for frontend
+            $echantillonsJson = $echantillons->toJson(JSON_PRETTY_PRINT);
 
             return view('sample-analyses.analysis-table', [
-                'echantillons' => $cachedData,
-                'echantillonsJson' => $jsonData
+                'echantillons' => $echantillons,
+                'echantillonsJson' => $echantillonsJson
             ]);
 
         } catch (\Exception $e) {
