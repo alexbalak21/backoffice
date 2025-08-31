@@ -155,10 +155,7 @@
                   
                   toastBody.textContent = 'Données enregistrées avec succès!';
                   toast.show();
-                  
-                  // Update status div
-                  statusDiv.textContent = 'Données enregistrées avec succès!';
-                  statusDiv.className = 'alert alert-success mt-2';
+                
                   
                   // Reload the page after a short delay to show the success message
                   setTimeout(() => {

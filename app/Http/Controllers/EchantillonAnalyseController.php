@@ -18,7 +18,7 @@ class EchantillonAnalyseController extends Controller
     {
         try {
             // Get fresh data from the database
-            $echantillons = EchantillonAnalyse::latest()->get();
+            $echantillons = EchantillonAnalyse::get();
             
             // Convert to JSON with pretty print for frontend
             $echantillonsJson = $echantillons->toJson(JSON_PRETTY_PRINT);
@@ -82,6 +82,34 @@ class EchantillonAnalyseController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors de l\'enregistrement: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Remove the specified echantillon from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
+    {
+        try {
+            $echantillon = EchantillonAnalyse::findOrFail($id);
+            $echantillon->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Échantillon supprimé avec succès',
+                'id' => $id
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de la suppression de l\'échantillon ' . $id . ': ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la suppression de l\'échantillon: ' . $e->getMessage()
             ], 500);
         }
     }
