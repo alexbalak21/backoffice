@@ -76,34 +76,14 @@
               <td>{{ $echantillon->note_nucleotide }}</td>
           </tr>
       @endforeach
-        <tr class="data-row" data-id="new">
-          <td></td>
-          <td contenteditable="true" data-label="nom_client"></td>
-          <td contenteditable="true" data-label="date_heure_prelevement"></td>
-          <td contenteditable="true" data-label="lieu_de_prelevement"></td>
-          <td contenteditable="true" data-label="date_heure_reception"></td>
-          <td contenteditable="true" data-label="temperature_reception"></td>
-          <td contenteditable="true" data-label="conditions_conservation"></td>
-          <td contenteditable="true" data-label="date_mise_en_analyse"></td>
-          <td contenteditable="true" data-label="fournisseur_fabricant"></td>
-          <td contenteditable="true" data-label="conditionnement"></td>
-          <td contenteditable="true" data-label="agrement"></td>
-          <td contenteditable="true" data-label="lot"></td>
-          <td contenteditable="true" data-label="type_de_peche"></td>
-          <td contenteditable="true" data-label="nom_de_produit"></td>
-          <td contenteditable="true" data-label="espece"></td>
-          <td contenteditable="true" data-label="origine"></td>
-          <td contenteditable="true" data-label="date_emballage"></td>
-          <td contenteditable="true" data-label="a_consommer_jusqu_au"></td>
-          <td contenteditable="true" data-label="imp"></td>
-          <td contenteditable="true" data-label="hx"></td>
-          <td contenteditable="true" data-label="note_nucleotide"></td>
-        </tr>
       </tbody>
             </table>
         </div>
         </form>
-
+        <div class="text-end">
+            <button id="newRowToggleBtn" type="button" class="btn btn-sm btn-success" onclick="toggleNewRow()"><i class="fa-solid fa-plus"></i> Ligne</button>
+        </div>
+        
     </div>
 
     <!-- Delete Confirmation Modal -->
@@ -170,22 +150,15 @@
               const statusDiv = document.getElementById('saveStatus');
               if (data.success) {
                 const newRow = document.querySelector('#editableTable tbody tr[data-id="new"]');
-                // REMOUVE contenteditable="true" from each td
                 newRow.querySelectorAll('td').forEach(td => td.removeAttribute('contenteditable'));
-                console.log(data.data[0]);
+                const dropdown = createDropdown(data.data[0].id);
                 newRow.querySelectorAll('td').forEach((td, index) => {
-                //FOREACH  OF data-label TD AND SET TEXT CONTENT FROM DATA
                  td.textContent = data.data[0][td.getAttribute('data-label')]
                  newRow.setAttribute('data-id', data.data[0].id);
                 });
+                newRow.querySelector('td:first-child').appendChild(dropdown);
 
-                  // Show toast notification
-                  const toastEl = document.getElementById('notificationToast');
-                  const toastBody = toastEl.querySelector('.toast-body');
-                  const toast = new bootstrap.Toast(toastEl);
-                  
-                  toastBody.textContent = 'Données enregistrées avec succès!';
-                  toast.show();
+                createToast('Données enregistrées avec succès', 'success');
               } else {
                   throw new Error(data.message || 'Erreur lors de l\'enregistrement');
               }
@@ -231,25 +204,7 @@
                   if (row) row.remove();
                   
                   // Show success message
-                  const toastEl = document.createElement('div');
-                  toastEl.className = 'toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 m-3';
-                  toastEl.setAttribute('role', 'alert');
-                  toastEl.innerHTML = `
-                      <div class="d-flex">
-                          <div class="toast-body">
-                              Échantillon supprimé avec succès
-                          </div>
-                          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                      </div>
-                  `;
-                  document.body.appendChild(toastEl);
-                  const toast = new bootstrap.Toast(toastEl);
-                  toast.show();
-                  
-                  // Remove the toast after it hides
-                  toastEl.addEventListener('hidden.bs.toast', function() {
-                      toastEl.remove();
-                  });
+                  createToast('Échantillon supprimé avec succès', 'success'); 
               }
           })
           .catch(error => {
@@ -263,5 +218,98 @@
               echantillonIdToDelete = null;
           });
       });
-    </script>
+
+    function createToast(message, type = 'success') {
+                  const toastEl = document.createElement('div');
+                  toastEl.className = `toast align-items-center text-white bg-${type} border-0 position-fixed bottom-0 end-0 m-3`;
+                  toastEl.setAttribute('role', 'alert');
+                  toastEl.innerHTML = `
+                      <div class="d-flex">
+                          <div class="toast-body">
+                              ${message}
+                          </div>
+                          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                      </div>
+                  `;
+                  document.body.appendChild(toastEl);
+                  const toast = new bootstrap.Toast(toastEl);
+                  toast.show();
+                  
+                  // Remove the toast after it hides
+                  toastEl.addEventListener('hidden.bs.toast', function() {
+                      toastEl.remove();
+                  });
+              }
+
+    function toggleNewRow() {
+        const newRow = document.querySelector('tr[data-id="new"]');
+        const toggleBtn = document.getElementById('newRowToggleBtn');
+        if (newRow) {
+            // Check if any cell has content
+            const hasData = Array.from(newRow.querySelectorAll('td')).some(td => {
+                return td.textContent && td.textContent.trim() !== '';
+            });
+            
+            if (hasData) {
+                if (!confirm('Êtes-vous sûr de vouloir annuler la création de cette ligne ? Les données non enregistrées seront perdues.')) {
+                    return; // Don't remove the row if user cancels
+                }
+            }
+            
+            newRow.remove();
+            toggleBtn.classList.remove('btn-danger');
+            toggleBtn.classList.add('btn-success');
+            toggleBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Ligne';
+        } else {
+            const tableBody = document.querySelector('#editableTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-id', 'new');
+            newRow.innerHTML = `
+            <td></td>
+                <td contenteditable="true" data-label="nom_client"></td>
+                <td contenteditable="true" data-label="date_heure_prelevement"></td>
+                <td contenteditable="true" data-label="lieu_de_prelevement"></td>
+                <td contenteditable="true" data-label="date_heure_reception"></td>
+                <td contenteditable="true" data-label="temperature_reception"></td>
+                <td contenteditable="true" data-label="conditions_conservation"></td>
+                <td contenteditable="true" data-label="date_mise_en_analyse"></td>
+                <td contenteditable="true" data-label="fournisseur_fabricant"></td>
+                <td contenteditable="true" data-label="conditionnement"></td>
+                <td contenteditable="true" data-label="agrement"></td>
+                <td contenteditable="true" data-label="lot"></td>
+                <td contenteditable="true" data-label="type_de_peche"></td>
+                <td contenteditable="true" data-label="nom_de_produit"></td>
+                <td contenteditable="true" data-label="espece"></td>
+                <td contenteditable="true" data-label="origine"></td>
+                <td contenteditable="true" data-label="date_emballage"></td>
+                <td contenteditable="true" data-label="a_consommer_jusqu_au"></td>
+                <td contenteditable="true" data-label="imp"></td>
+                <td contenteditable="true" data-label="hx"></td>
+                <td contenteditable="true" data-label="note_nucleotide"></td>
+            `;
+            tableBody.appendChild(newRow);
+            toggleBtn.classList.remove('btn-success');
+            toggleBtn.classList.add('btn-danger');
+            toggleBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Ligne';
+        }
+    }
+
+    function createDropdown(id) {
+        const dropdown = document.createElement('div')
+        dropdown.classList.add('dropdown')
+        dropdown.innerHTML = `
+                    <a class="dropdown-toggle text-secondary user-select-none" id="row-${id}" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </a>
+                    <ul class="dropdown-menu" id="dropdownMenu${id}" aria-labelledby="row-${id}">
+                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen"></i> Modifier</a></li>
+                        <li><a class="dropdown-item delete-btn" href="#" data-id="${id}" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fa-solid fa-trash"></i> Supprimer
+                        </a></li>
+                    </ul>
+        `
+        return dropdown;
+    }
+    
+</script>
 </x-layout>
