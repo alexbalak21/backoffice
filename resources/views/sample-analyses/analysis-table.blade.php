@@ -47,7 +47,6 @@
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </a>
                     <ul class="dropdown-menu" id="dropdownMenu{{ $echantillon->id }}" aria-labelledby="row-{{ $echantillon->id }}">
-                        
                         <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen"></i> Modifier</a></li>
                         <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash"></i> Supprimer</a></li>
                     </ul>
@@ -75,7 +74,7 @@
               <td>{{ $echantillon->note_nucleotide }}</td>
           </tr>
       @endforeach
-        <tr class="data-row">
+        <tr class="data-row" data-id="new">
           <td></td>
           <td contenteditable="true" data-label="nom_client"></td>
           <td contenteditable="true" data-label="date_heure_prelevement"></td>
@@ -148,6 +147,16 @@
           .then(data => {
               const statusDiv = document.getElementById('saveStatus');
               if (data.success) {
+                const newRow = document.querySelector('#editableTable tbody tr[data-id="new"]');
+                // REMOUVE contenteditable="true" from each td
+                newRow.querySelectorAll('td').forEach(td => td.removeAttribute('contenteditable'));
+                console.log(data.data[0]);
+                newRow.querySelectorAll('td').forEach((td, index) => {
+                //FOREACH  OF data-label TD AND SET TEXT CONTENT FROM DATA
+                 td.textContent = data.data[0][td.getAttribute('data-label')]
+                 newRow.setAttribute('data-id', data.data[0].id);
+                });
+
                   // Show toast notification
                   const toastEl = document.getElementById('notificationToast');
                   const toastBody = toastEl.querySelector('.toast-body');
@@ -155,12 +164,6 @@
                   
                   toastBody.textContent = 'Données enregistrées avec succès!';
                   toast.show();
-                
-                  
-                  // Reload the page after a short delay to show the success message
-                  setTimeout(() => {
-                      window.location.reload();
-                  }, 1000);
               } else {
                   throw new Error(data.message || 'Erreur lors de l\'enregistrement');
               }
