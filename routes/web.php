@@ -33,7 +33,7 @@ Route::get('pdfs/{pdf}/download', [\App\Http\Controllers\PdfController::class, '
 
 // Echantillon Analyse routes
 Route::resource('echantillon-analyses', EchantillonAnalyseController::class)->only([
-    'store', 'destroy'
+    'store', 'destroy', 'update'
 ]);
 
 // Custom route for analysis table

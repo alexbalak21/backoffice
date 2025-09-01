@@ -87,6 +87,57 @@ class EchantillonAnalyseController extends Controller
     }
 
     /**
+     * Update the specified echantillon in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            $echantillon = EchantillonAnalyse::findOrFail($id);
+            $data = $request->all();
+            
+            // Log the received data for debugging
+            \Log::info('Updating echantillon ' . $id . ' with data:', $data);
+            
+            // Only update if at least one field has a value
+            if (!empty($data) && !empty(array_filter($data))) {
+                $updated = $echantillon->update($data);
+                
+                if ($updated) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Échantillon mis à jour avec succès',
+                        'data' => $echantillon->fresh()
+                    ]);
+                }
+                
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Échec de la mise à jour de l\'échantillon',
+                    'data' => $data
+                ], 400);
+            }
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Aucune donnée valide fournie pour la mise à jour',
+                'received_data' => $data
+            ], 400);
+            
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de la mise à jour de l\'échantillon ' . $id . ': ' . $e->getMessage() . '\n' . $e->getTraceAsString());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la mise à jour de l\'échantillon: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Remove the specified echantillon from storage.
      *
      * @param  int  $id
