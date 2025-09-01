@@ -48,7 +48,9 @@
                     </a>
                     <ul class="dropdown-menu" id="dropdownMenu{{ $echantillon->id }}" aria-labelledby="row-{{ $echantillon->id }}">
                         <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen"></i> Modifier</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fa-solid fa-trash"></i> Supprimer</a></li>
+                        <li><a class="dropdown-item delete-btn" href="#" data-id="{{ $echantillon->id }}" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fa-solid fa-trash"></i> Supprimer
+                        </a></li>
                     </ul>
                 </div>
             </td>
@@ -103,6 +105,26 @@
         </form>
 
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer cet échantillon ? Cette action est irréversible.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
       window.echantillonsData = {!! $echantillonsJson ?? '[]' !!};
 
@@ -172,6 +194,73 @@
               const statusDiv = document.getElementById('saveStatus');
               statusDiv.textContent = 'Erreur: ' + error.message;
               statusDiv.className = 'alert alert-danger mt-2';
+          });
+      });
+
+      // Handle delete confirmation
+      let echantillonIdToDelete = null;
+      
+      // Set the echantillon ID when delete button is clicked
+      document.addEventListener('click', function(e) {
+          if (e.target.closest('.delete-btn')) {
+              e.preventDefault();
+              echantillonIdToDelete = e.target.closest('.delete-btn').getAttribute('data-id');
+          }
+      });
+
+      // Handle the actual deletion
+      document.getElementById('confirmDelete').addEventListener('click', function() {
+          if (!echantillonIdToDelete) return;
+          
+          fetch(`/echantillon-analyses/${echantillonIdToDelete}`, {
+              method: 'DELETE',
+              headers: {
+                  'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          })
+          .then(response => {
+              if (!response.ok) throw new Error('Erreur lors de la suppression');
+              return response.json();
+          })
+          .then(data => {
+              if (data.success) {
+                  // Remove the row from the table
+                  const row = document.querySelector(`tr[data-id="${echantillonIdToDelete}"]`);
+                  if (row) row.remove();
+                  
+                  // Show success message
+                  const toastEl = document.createElement('div');
+                  toastEl.className = 'toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 m-3';
+                  toastEl.setAttribute('role', 'alert');
+                  toastEl.innerHTML = `
+                      <div class="d-flex">
+                          <div class="toast-body">
+                              Échantillon supprimé avec succès
+                          </div>
+                          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                      </div>
+                  `;
+                  document.body.appendChild(toastEl);
+                  const toast = new bootstrap.Toast(toastEl);
+                  toast.show();
+                  
+                  // Remove the toast after it hides
+                  toastEl.addEventListener('hidden.bs.toast', function() {
+                      toastEl.remove();
+                  });
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('Une erreur est survenue lors de la suppression');
+          })
+          .finally(() => {
+              // Close the modal
+              const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+              modal.hide();
+              echantillonIdToDelete = null;
           });
       });
     </script>

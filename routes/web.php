@@ -32,8 +32,10 @@ Route::get('pdfs/{pdf}/download', [\App\Http\Controllers\PdfController::class, '
 
 
 // Echantillon Analyse routes
-Route::prefix('echantillon-analyses')->group(function () {
-    Route::get('analysis-table', [EchantillonAnalyseController::class, 'analysisTable'])->name('analysis-table');
-    Route::post('/', [EchantillonAnalyseController::class, 'store'])->name('echantillon-analyses.store');
-});
+Route::resource('echantillon-analyses', EchantillonAnalyseController::class)->only([
+    'store', 'destroy'
+]);
+
+// Custom route for analysis table
+Route::get('echantillon-analyses/analysis-table', [EchantillonAnalyseController::class, 'analysisTable'])->name('echantillon-analyses.analysis-table');
 
