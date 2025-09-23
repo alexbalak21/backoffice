@@ -11,6 +11,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    // Analysis Resource Routes
+    Route::resource('analyses', \App\Http\Controllers\AnalysisController::class);
 });
 
 require __DIR__.'/settings.php';

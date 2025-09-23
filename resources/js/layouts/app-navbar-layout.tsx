@@ -36,6 +36,10 @@ export default function AppNavbarLayout({ children, breadcrumbs = [] }: AppNavba
                         title: 'Dashboard', 
                         url: dashboardUrl 
                     },
+                    {
+                        title: 'Analyses',
+                        url: '/analysis'
+                    },
                     // Add more menu items here
                     // Example:
                     // {

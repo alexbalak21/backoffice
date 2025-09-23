@@ -29,5 +29,10 @@ export default function spreadsheetTable() {
 
   const data = Array(1).fill(null).map(createEmptyRow)
 
-  return <Spreadsheet data={data} columnLabels={columnNames} />
+  return (
+    <div>
+      <Spreadsheet data={data} columnLabels={columnNames} />
+      <button className="mt-5 mb-5">Sauvgarder</button>
+    </div>
+  )
 }
