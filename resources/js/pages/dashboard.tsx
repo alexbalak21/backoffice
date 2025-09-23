@@ -2,11 +2,12 @@
 import AppNavbarLayout from '@/layouts/app-navbar-layout';
 import { dashboard } from '@/routes';
 import { Head } from '@inertiajs/react';
+import SpreadsheetTable from '@/components/spreadsheetTable';
 
 export default function Dashboard() {
     return (
         <AppNavbarLayout>
-            <h1>Dashboard</h1>
+            <SpreadsheetTable />
         </AppNavbarLayout>
     );
 }

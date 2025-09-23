@@ -53,7 +53,7 @@ export default function AppNavbarLayout({ children, breadcrumbs = [] }: AppNavba
                 }}
             />
             
-            <main className="container mx-auto py-6 px-4">
+            <main className="px-1 mt-4 overflow-x-auto">
                 {children}
             </main>
         </div>
