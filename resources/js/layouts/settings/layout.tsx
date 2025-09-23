@@ -7,28 +7,47 @@ import { edit as editPassword } from '@/routes/password';
 import { edit } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
+import { type RouteDefinition } from '@/lib/routes';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import { getRouteUrl } from '@/lib/routes';
+
+// Helper function to convert route to string URL
+const getNavItemHref = (route: any): string => {
+    if (!route) return '/';
+    if (typeof route === 'string') return route;
+    if (typeof route === 'object' && 'url' in route) return route.url;
+    if (typeof route === 'function') {
+        try {
+            const result = route();
+            return getNavItemHref(result);
+        } catch (e) {
+            console.error('Error getting route URL:', e);
+            return '/';
+        }
+    }
+    return '/';
+};
 
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Profile',
-        href: edit(),
+        href: getNavItemHref(edit()),
         icon: null,
     },
     {
         title: 'Password',
-        href: editPassword(),
+        href: getNavItemHref(editPassword()),
         icon: null,
     },
     {
         title: 'Two-Factor Auth',
-        href: show(),
+        href: getNavItemHref(show()),
         icon: null,
     },
     {
         title: 'Appearance',
-        href: editAppearance(),
+        href: getNavItemHref(editAppearance()),
         icon: null,
     },
 ];
@@ -42,32 +61,30 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const currentPath = window.location.pathname;
 
     return (
-        <div className="px-4 py-6">
-            <Heading
-                title="Settings"
-                description="Manage your profile and account settings"
-            />
+        <>
+            <div className="mb-8">
+                <Heading
+                    title="Settings"
+                    description="Manage your profile and account settings"
+                />
+            </div>
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">
-                <aside className="w-full max-w-xl lg:w-48">
-                    <nav className="flex flex-col space-y-1 space-x-0">
+                <aside className="w-full max-w-xs lg:w-56">
+                    <nav className="flex flex-col space-y-1">
                         {sidebarNavItems.map((item, index) => (
                             <Button
-                                key={`${typeof item.href === 'string' ? item.href : item.href.url}-${index}`}
+                                key={`${item.href}-${index}`}
                                 size="sm"
                                 variant="ghost"
                                 asChild
                                 className={cn('w-full justify-start', {
-                                    'bg-muted':
-                                        currentPath ===
-                                        (typeof item.href === 'string'
-                                            ? item.href
-                                            : item.href.url),
+                                    'bg-muted': currentPath === item.href,
                                 })}
                             >
                                 <Link href={item.href}>
                                     {item.icon && (
-                                        <item.icon className="h-4 w-4" />
+                                        <item.icon className="mr-2 h-4 w-4" />
                                     )}
                                     {item.title}
                                 </Link>
@@ -78,12 +95,12 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
                 <Separator className="my-6 lg:hidden" />
 
-                <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">
+                <div className="flex-1">
+                    <section className="space-y-6">
                         {children}
                     </section>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
