@@ -6,30 +6,28 @@ import {
 import { Button } from '@/components/ui/button';
 import { UserInfo } from '@/components/user-info';
 import { UserMenuContent } from '@/components/user-menu-content';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
 
-export function NavUser() {
+export function NavbarUser() {
     const { auth } = usePage<SharedData>().props;
-    const isMobile = useIsMobile();
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"
-                    className="flex h-auto w-full items-center justify-between gap-2 p-2 hover:bg-accent hover:text-accent-foreground"
+                    className="flex items-center gap-2 px-2"
                 >
                     <UserInfo user={auth.user} />
-                    <ChevronsUpDown className="ml-2 size-4 opacity-50" />
+                    <ChevronsUpDown className="ml-1 size-4" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
                 className="min-w-56 rounded-lg"
-                align={isMobile ? 'start' : 'end'}
-                side={isMobile ? 'bottom' : 'bottom'}
+                align="end"
+                side="bottom"
             >
                 <UserMenuContent user={auth.user} />
             </DropdownMenuContent>
