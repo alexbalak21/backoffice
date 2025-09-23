@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import { usePage } from "@inertiajs/react";
 import { NavUser } from "@/components/nav-user";
+import { type SharedData } from "@/types";
 
 import {
   Accordion,
@@ -73,7 +74,7 @@ const Navbar = ({
 }: NavbarProps) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="flex h-16 items-center justify-between px-4">
         {/* Desktop Menu */}
         <nav className="hidden items-center space-x-6 lg:flex">
           {/* Logo */}
@@ -107,7 +108,7 @@ const Navbar = ({
 
         {/* User Menu / Auth Buttons */}
         <div className="hidden items-center lg:flex">
-          {usePage().props.auth?.user ? (
+          {usePage<SharedData>().props.auth?.user ? (
             <NavUser />
           ) : (
             <div className="flex items-center space-x-2">
@@ -140,21 +141,21 @@ const Navbar = ({
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <SheetHeader>
-                <SheetTitle className="text-left">
-                  <a href={logo.url} className="flex items-center space-x-2">
-                    <img
-                      src={logo.src}
-                      className="h-8 w-auto"
-                      alt={logo.alt}
-                    />
-                    <span className="text-lg font-semibold">{logo.title}</span>
-                  </a>
-                </SheetTitle>
-              </SheetHeader>
-              <div className="flex flex-col gap-6 p-4">
-                <div className="mt-6 space-y-1">
+            <SheetContent side="right" className="flex w-[300px] flex-col sm:w-[400px]">
+              <div className="flex-1 overflow-y-auto">
+                <SheetHeader className="mb-6">
+                  <SheetTitle className="text-left">
+                    <a href={logo.url} className="flex items-center space-x-2">
+                      <img
+                        src={logo.src}
+                        className="h-8 w-auto"
+                        alt={logo.alt}
+                      />
+                      <span className="text-lg font-semibold">{logo.title}</span>
+                    </a>
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="space-y-1">
                   {menu.map((item, index) => (
                     <a
                       key={index}
@@ -164,13 +165,15 @@ const Navbar = ({
                       {item.title}
                     </a>
                   ))}
-                </div>
-                {usePage().props.auth?.user ? (
-                  <div className="mt-6">
+                </nav>
+              </div>
+              <div className="border-t p-4">
+                {usePage<SharedData>().props.auth?.user ? (
+                  <div className="flex items-center justify-between">
                     <NavUser />
                   </div>
                 ) : (
-                  <div className="mt-6 flex flex-col space-y-2">
+                  <div className="flex flex-col space-y-2">
                     <Button asChild variant="outline" className="w-full">
                       <a href={auth.login.url}>{auth.login.title}</a>
                     </Button>

@@ -28,8 +28,8 @@ export default function AppNavbarLayout({ children, breadcrumbs = [] }: AppNavba
                 logo={{
                     url: dashboardUrl,
                     src: "/logo.svg",
-                    alt: "Your App Logo",
-                    title: "Your App"
+                    alt: "Logo",
+                    title: "Backoffice"
                 }}
                 menu={[
                     { 
